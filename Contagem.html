@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contador de Tempo</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f4f4f4;
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #contador {
+      margin-top: 20px;
+      font-size: 28px;
+      color: #555;
+      transition: color 0.3s ease-in-out;
+    }
+
+    #baloes-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      bottom: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    .balao {
+      width: 20px;
+      height: 30px;
+      background-color: #ff7f50;
+      border-radius: 50%;
+      position: absolute;
+      animation: subir 5s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes subir {
+      0% {
+        transform: translateY(100%);
+      }
+      100% {
+        transform: translateY(-100%);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="baloes-container"></div>
+
+<div class="container">
+  <h1>Contador de Tempo sem "Eu te amo"</h1>
+  <div id="contador"></div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const dataInicial = new Date('2024-01-18').getTime();
+
+    function formatTime(time) {
+      return time < 10 ? `0${time}` : time;
+    }
+
+    function atualizarContador() {
+      const dataAtual = new Date().getTime();
+      const diferenca = dataAtual - dataInicial;
+
+      const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+      const contadorElement = document.getElementById('contador');
+      contadorElement.innerHTML = `
+        <p>Dias: ${formatTime(dias)}</p>
+        <p>Horas: ${formatTime(horas)}</p>
+        <p>Minutos: ${formatTime(minutos)}</p>
+        <p>Segundos: ${formatTime(segundos)}</p>
+      `;
+
+      // Adicionando uma animação sutil
+      contadorElement.style.color = '#ff7f50'; // Cor de pêssego
+      setTimeout(() => {
+        contadorElement.style.color = '#555'; // Restaurar cor original
+      }, 300);
+    }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+
+    // Adicionar balões
+    const baloesContainer = document.getElementById('baloes-container');
+    for (let i = 0; i < 10; i++) {
+      const balao = document.createElement('div');
+      balao.className = 'balao';
+      balao.style.left = `${Math.random() * 100}%`;
+      balao.style.animationDuration = `${Math.random() * 5 + 3}s`;
+      baloesContainer.appendChild(balao);
+    }
+  });
+</script>
+
+</body>
+</html>
